@@ -79,10 +79,13 @@
 
 #pragma mark - UIPanGestureRecognizer
 
-- (void)pan:(UIPanGestureRecognizer*)recognizer
+- (void)pan:(SSWDirectionalPanGestureRecognizer*)recognizer
 {
     UIView *view = self.navigationController.view;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
+        if (!recognizer.dragging) {
+            return;
+        }
         if (self.navigationController.viewControllers.count > 1 && !self.duringAnimation) {
             self.interactionController = [[UIPercentDrivenInteractiveTransition alloc] init];
             self.interactionController.completionCurve = UIViewAnimationCurveEaseOut;
@@ -110,6 +113,13 @@
 
 -(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if (self.navigationController.viewControllers.count > 1) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([otherGestureRecognizer.view isKindOfClass:[UITableView class]]) {
         return YES;
     }
     return NO;

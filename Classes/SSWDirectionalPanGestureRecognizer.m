@@ -6,9 +6,9 @@
 
 #import "SSWDirectionalPanGestureRecognizer.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
+#import <UIKit/UIScreen.h>
 
 @interface SSWDirectionalPanGestureRecognizer()
-@property (nonatomic) BOOL dragging;
 @end
 
 @implementation SSWDirectionalPanGestureRecognizer
@@ -17,10 +17,14 @@
 {
     [super touchesMoved:touches withEvent:event];
 
+    UITouch* touch = [touches anyObject];
+    CGPoint beginPoint = [touch locationInView:self.view];
+    if (beginPoint.x > UIScreen.mainScreen.bounds.size.width/6) {
+        return;
+    }
     if (self.state == UIGestureRecognizerStateFailed) return;
 
     CGPoint velocity = [self velocityInView:self.view];
-
     // check direction only on the first move
     if (!self.dragging && !CGPointEqualToPoint(velocity, CGPointZero)) {
         NSDictionary *velocities = @{

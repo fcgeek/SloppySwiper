@@ -19,5 +19,6 @@ typedef NS_ENUM(NSInteger, SSWPanDirection) {
 @interface SSWDirectionalPanGestureRecognizer : UIPanGestureRecognizer
 
 @property (nonatomic) SSWPanDirection direction;
+@property (nonatomic) BOOL dragging;
 
 @end
