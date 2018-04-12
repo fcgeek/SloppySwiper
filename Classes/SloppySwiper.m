@@ -111,7 +111,11 @@
 
 #pragma mark - UIGestureRecognizerDelegate
 
--(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+-(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {    
+    CGPoint velocity = [gestureRecognizer locationInView:self.navigationController.view];
+    if(velocity.x > UIScreen.mainScreen.bounds.size.width/6) {
+        return NO;
+    }
     if (self.navigationController.viewControllers.count > 1) {
         return YES;
     }
